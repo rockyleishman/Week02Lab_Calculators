@@ -32,20 +32,30 @@ public class AgeCalculatorServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        getServletContext().getRequestDispatcher("/agecalculator.jsp").forward(request, response);
+        //calculate next age
+        String currentAge = request.getParameter("currentage");
+        int nextAgeNum = -1;
+        String nextAgeMessage = "";
         
-        //try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            /*out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AgeCalculatorServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AgeCalculatorServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");*/
-        //}
+        if(currentAge != null)
+        {
+            try
+            {
+                nextAgeNum = Integer.parseInt(currentAge) + 1;
+                nextAgeMessage = "Next birthday your age will be " + nextAgeNum;
+                
+            }
+            catch(Exception e)
+            {
+                nextAgeMessage = "You must give your current age.";
+            }
+            
+            request.setAttribute("nextagemessage", nextAgeMessage);
+        }
+        
+        //process agecalculator.jsp
+        getServletContext().getRequestDispatcher("/WEB-INF/agecalculator.jsp").forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
